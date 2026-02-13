@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LSPartes IA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ff88;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #00ff88;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .response {
+      margin-top: 15px;
+      background: #222;
+      padding: 10px;
+      border-radius: 8px;
+      min-height: 50px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>LSPartes IA</h1>
+    <textarea id="inputText" placeholder="Descreva o que precisa..."></textarea>
+    <button onclick="analyze()">Analisar</button>
+    <div class="response" id="response"></div>
+  </div>
+
+  <script>
+    async function analyze() {
+      const text = document.getElementById("inputText").value;
+      const responseBox = document.getElementById("response");
+      responseBox.innerHTML = "A analisar...";
+
+      try {
+        const res = await fetch("https://lspartes-api.onrender.com/analyze", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ text: text })
+        });
+
+        const data = await res.json();
+        responseBox.innerHTML = data.result || JSON.stringify(data);
+
+      } catch (error) {
+        responseBox.innerHTML = "Erro ao conectar com a IA.";
+      }
+    }
+  </script>
+</body>
+</html>
